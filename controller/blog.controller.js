@@ -89,10 +89,6 @@ const updateBlog = (req, res) => {
         return res.status(200).json({
             message: "Blog updated successfully",
             blog,
-            updatedFields: {
-                title: title ? true : false,
-                content: content ? true : false
-            }
         });
     } catch (error) {
         console.error("Error:", error);
