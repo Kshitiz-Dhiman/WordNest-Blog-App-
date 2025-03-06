@@ -82,7 +82,6 @@ const updateBlog = (req, res) => {
             return res.status(404).json({ message: "Blog not found" });
         }
 
-        // Only update fields that are provided
         if (title) blog.title = title;
         if (content) blog.content = content;
 
@@ -99,38 +98,19 @@ const updateBlog = (req, res) => {
 const deleteBlog = (req, res) => {
     try {
         const { id } = req.params;
-
-        if (!id) {
-            return res.status(400).json({ message: "Id is required" });
-        }
-
-        const blogIdNum = Number.parseInt(id);
-        const blog = blogs.find((blog) => blog.id === blogIdNum);
+        const blog = blogs.find((blog) => {
+            return blog.id === Number.parseInt(id);
+        })
 
         if (!blog) {
             return res.status(404).json({ message: "Blog not found" });
         }
-
         const index = blogs.indexOf(blog);
         blogs.splice(index, 1);
-
-        // Also delete related authorships
-        const relatedAuthorships = Authorship.filter(authorship => authorship.blogId === blogIdNum);
-        relatedAuthorships.forEach(authorship => {
-            const authorshipIndex = Authorship.indexOf(authorship);
-            if (authorshipIndex !== -1) {
-                Authorship.splice(authorshipIndex, 1);
-            }
-        });
-
-        return res.status(200).json({
-            message: "Blog deleted successfully",
-            relatedAuthorshipsRemoved: relatedAuthorships.length
-        });
+        res.status(200).json({ message: "Blog deleted successfully" });
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Internal Server Error", error: error.message });
+        res.status(500).json({ message: "Internal Server Error" });
     }
-};
+}
 
 module.exports = { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog };
