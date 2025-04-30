@@ -1,9 +1,12 @@
-const { blogs, users, Authorship } = require("../index");
+const Authorship = require("../models/Authorship"); // Assuming you have an Authorship model
+const Blog = require("../models/Blog"); // Assuming you have a Blog model
+const User = require("../models/User"); // Assuming you have a User model
 
-const getAuthorship = (req, res) => {
+const getAuthorship = async (req, res) => {
     try {
-        if (Authorship.length > 0) {
-            res.status(200).json(Authorship);
+        const authorships = await Authorship.find().populate("blogId").populate("authorId");
+        if (authorships.length > 0) {
+            res.status(200).json(authorships);
         } else {
             res.status(404).json({ message: "No authorship found" });
         }
@@ -13,7 +16,7 @@ const getAuthorship = (req, res) => {
     }
 };
 
-const createAuthorship = (req, res) => {
+const createAuthorship = async (req, res) => {
     try {
         const { blogId, authorId } = req.query;
 
@@ -21,45 +24,39 @@ const createAuthorship = (req, res) => {
             return res.status(400).json({ message: "BlogId and authorId are required" });
         }
 
-        const blogIdNum = Number.parseInt(blogId);
-        const authorIdNum = Number.parseInt(authorId);
-
-        const blog = blogs.find((blog) => blog.id === blogIdNum);
-        const author = users.find((user) => user.id === authorIdNum);
-
+        const blog = await Blog.findOne({ id: blogId });
         if (!blog) {
             return res.status(404).json({ message: "Blog not found" });
         }
 
+        const author = await User.findOne({ id: authorId });
         if (!author) {
             return res.status(404).json({ message: "Author not found" });
         }
 
-        const isDuplicate = Authorship.find((authorship) => {
-            return authorship.blogId === blogIdNum && authorship.authorId === authorIdNum
+        const isDuplicate = await Authorship.findOne({ 
+            blogId: blog._id, 
+            authorId: author._id 
         });
-
+        
         if (isDuplicate) {
             return res.status(400).json({ message: "Authorship already exists" });
         }
 
-        const newAuthorship = {
-            id: Authorship.length + 1,
-            blogId: blogIdNum,
-            authorId: authorIdNum
-        };
+        const newAuthorship = new Authorship({ 
+            blogId: blog._id, 
+            authorId: author._id 
+        });
+        await newAuthorship.save();
 
-        Authorship.push(newAuthorship);
         res.status(201).json({
             message: "Authorship created successfully",
-            authorship: newAuthorship
+            authorship: newAuthorship,
         });
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 };
-
-
 
 module.exports = { getAuthorship, createAuthorship };
