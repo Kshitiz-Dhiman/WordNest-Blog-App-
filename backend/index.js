@@ -22,6 +22,5 @@ app.use("/blog", blogRouter);
 app.use("/authorship", authorshipRouter);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
-

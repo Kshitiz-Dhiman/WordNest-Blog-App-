@@ -90,7 +90,7 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+                        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition font-bold">
                             Create User
                         </button>
                     </form>

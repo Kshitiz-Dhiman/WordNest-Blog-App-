@@ -1,6 +1,6 @@
-const Authorship = require("../models/Authorship"); // Assuming you have an Authorship model
-const Blog = require("../models/Blog"); // Assuming you have a Blog model
-const User = require("../models/User"); // Assuming you have a User model
+const Authorship = require("../models/Authorship");
+const Blog = require("../models/Blog");
+const User = require("../models/User");
 
 const getAuthorship = async (req, res) => {
     try {
@@ -34,18 +34,18 @@ const createAuthorship = async (req, res) => {
             return res.status(404).json({ message: "Author not found" });
         }
 
-        const isDuplicate = await Authorship.findOne({ 
-            blogId: blog._id, 
-            authorId: author._id 
+        const isDuplicate = await Authorship.findOne({
+            blogId: blog._id,
+            authorId: author._id
         });
-        
+
         if (isDuplicate) {
             return res.status(400).json({ message: "Authorship already exists" });
         }
 
-        const newAuthorship = new Authorship({ 
-            blogId: blog._id, 
-            authorId: author._id 
+        const newAuthorship = new Authorship({
+            blogId: blog._id,
+            authorId: author._id
         });
         await newAuthorship.save();
 
