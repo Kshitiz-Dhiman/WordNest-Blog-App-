@@ -21,7 +21,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://wordnest-backend.vercel.app/user/create-user', userData);
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/create-user`, userData);
 
             console.log(response.message);
         } catch (e) {

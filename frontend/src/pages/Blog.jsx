@@ -18,13 +18,13 @@ const CreateBlog = () => {
 
         try {
             if (isUpdateMode && currentBlogId) {
-                const response = await axios.put(`http://localhost:3000/blog/update-blog/${currentBlogId}`, {
+                const response = await axios.put(`${import.meta.env.VITE_API_URL}/blog/update-blog/${currentBlogId}`, {
                     title: formData.title,
                     content: formData.content
                 });
                 console.log(response.data);
             } else {
-                const response = await axios.post("http://localhost:3000/blog/create-blogs", formData);
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/blog/create-blogs`, formData);
                 console.log(response.data);
             }
 
@@ -40,7 +40,7 @@ const CreateBlog = () => {
 
     const fetchBlogs = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/blog/get-blog");
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/blog/get-blog`);
             setBlogs(response.data);
         } catch (e) {
             console.log(e)
@@ -49,7 +49,7 @@ const CreateBlog = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3000/blog/delete-blog/${id}`);
+            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/blog/delete-blog/${id}`);
             console.log(response.data);
             fetchBlogs();
         } catch (e) {

@@ -8,7 +8,7 @@ const User = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/user/get-user');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/get-user`);
                 setUsers(response.data);
             } catch (e) {
                 console.error(e);

@@ -14,7 +14,7 @@ const Authorship = () => {
     const fetchAuthorships = async () => {
         try {
             setLoading(true);
-            const response = await axios.get("http://localhost:3000/authorship/get-authorship");
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/authorship/get-authorship`);
             setAuthorships(response.data);
             setError(null);
         } catch (e) {
@@ -27,7 +27,7 @@ const Authorship = () => {
 
     const fetchBlogs = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/blog/get-blog");
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/blog/get-blog`);
             setBlogs(response.data);
         } catch (e) {
             console.log(e);
@@ -36,7 +36,7 @@ const Authorship = () => {
 
     const fetchAuthors = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/user/get-user");
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/get-user`);
             setAuthors(response.data);
         } catch (e) {
             console.log(e);
@@ -50,7 +50,7 @@ const Authorship = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/authorship/create-authorship?blogId=${formData.blogId}&authorId=${formData.authorId}`);
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/authorship/create-authorship?blogId=${formData.blogId}&authorId=${formData.authorId}`);
             console.log(response.data);
             setFormData({ blogId: '', authorId: '' });
             setIsModalOpen(false);
