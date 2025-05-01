@@ -4,12 +4,14 @@ import axios from 'axios';
 
 const User = () => {
     const [users, setUsers] = useState([]);
-
+    const [isloading, setisLoading] = useState(false);
     useEffect(() => {
         const fetchUser = async () => {
+            setisLoading(true);
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/get-user`);
                 setUsers(response.data);
+                setisLoading(false);
             } catch (e) {
                 console.error(e);
             }
@@ -33,7 +35,11 @@ const User = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? (
+                                {isloading ? (
+                                    <div className='flex w-full justify-center items-center h-10'>
+                                        loading...
+                                    </div>
+                                ) : users.length > 0 ? (
                                     users.map((user) => (
                                         <tr key={user._id} className='border-b hover:bg-gray-100'>
                                             <td className='px-4 py-2'>{user.id}</td>
@@ -43,7 +49,7 @@ const User = () => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="4" className="text-center py-4 text-gray-500">
+                                        <td colSpan="3" className="text-center py-4 text-gray-500">
                                             No users found
                                         </td>
                                     </tr>

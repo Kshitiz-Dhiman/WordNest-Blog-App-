@@ -22,8 +22,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/create-user`, userData);
+            alert("User created successfully!");
 
-            console.log(response.message);
         } catch (e) {
             alert(e.response.data.message);
         }
@@ -90,7 +90,7 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition font-bold">
+                        <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition font-bold hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
                             Create User
                         </button>
                     </form>
